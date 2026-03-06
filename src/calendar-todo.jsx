@@ -115,7 +115,7 @@ export default function App(){
     setNewText(""); setAiLoading(true);
     try{
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBQdvcHuqO1mm44qHv5AF3LbcM9tPyo5ZQ`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAqhWYPH-u7-l1y_0CBkHlLTgiYUyYx9_I`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -127,6 +127,10 @@ export default function App(){
         }
       );
       const data = await res.json();
+      if(res.status === 429){
+        await new Promise(r => setTimeout(r, 3000));
+        // 然后重试一次
+      }
       const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
       const steps = JSON.parse(raw.replace(/```json|```/g,"").trim()).map((s,i)=>({...s,done:false,id:i}));
       setTasks(prev=>({...prev,[key]:(prev[key]||[]).map(t=>t.id===taskId?{...t,steps,loading:false}:t)}));
