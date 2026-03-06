@@ -422,7 +422,7 @@ export default function App(){
       {/* DAY MODAL */}
       {showModal&&selectedDay&&(
         <div onClick={()=>setShowModal(false)} style={{position:"fixed",inset:0,background:"rgba(171,152,162,0.5)",display:"flex",alignItems:"flex-end",justifyContent:"center",zIndex:200,backdropFilter:"blur(6px)"}}>
-          <div onClick={e=>e.stopPropagation()} style={{background:"#f5edf1",borderRadius:"18px 18px 0 0",padding:"17px 17px 38px",width:"100%",maxWidth:540,maxHeight:"90vh",overflowY:"auto",border:"1px solid #c9b8c0",borderBottom:"none"}}>
+          <div onClick={e=>e.stopPropagation()} style={{background:"#61595d",borderRadius:"18px 18px 0 0",padding:"17px 17px 38px",width:"100%",maxWidth:540,maxHeight:"90vh",overflowY:"auto",border:"1px solid #c9b8c0",borderBottom:"none"}}>
             <div style={{width:32,height:3,background:"#ab98a2",borderRadius:2,margin:"0 auto 15px"}}/>
             <div style={{marginBottom:15}}>
               <div style={{fontSize:18,fontWeight:700}}>{MONTHS[month]} {selectedDay}, {year}</div>
