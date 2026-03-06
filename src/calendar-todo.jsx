@@ -125,6 +125,7 @@ export default function App(){
       });
       const data = await res.json();
       const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
+      const steps = JSON.parse(raw.replace(/```json|```/g,"").trim()).map((s,i)=>({...s,done:false,id:i}));
       setTasks(prev=>({...prev,[key]:(prev[key]||[]).map(t=>t.id===taskId?{...t,steps,loading:false}:t)}));
     }catch{
       setTasks(prev=>({...prev,[key]:(prev[key]||[]).map(t=>t.id===taskId?{...t,steps:[{id:0,step:"Complete task",detail:newText.trim(),done:false}],loading:false}:t)}));
