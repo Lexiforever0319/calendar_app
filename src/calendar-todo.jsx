@@ -114,25 +114,17 @@ export default function App(){
     setTasks(prev=>({...prev,[key]:[...(prev[key]||[]),skeleton]}));
     setNewText(""); setAiLoading(true);
     try{
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-8b:generateContent?key=AIzaSyAqhWYPH-u7-l1y_0CBkHlLTgiYUyYx9_I`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{
-              parts: [{ text: `Break down this to-do task into 3-6 concrete, actionable steps. Return ONLY a JSON array with no markdown or explanation. Format: [{"step":"Short title (max 6 words)","detail":"One sentence description"}]\n\nCategory: ${cat.label}\n${newStart?"Start: "+fmtDate(newStart):""}\n${newDDL?"Deadline: "+fmtDate(newDDL):""}\nTask: "${newText.trim()}"` }]
-            }]
-          }),
-        }
-      );
+      const res = await fetch("https://calendendar.lavender030319.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: `Break down this to-do task into 3-6 concrete, actionable steps. Return ONLY a JSON array with no markdown or explanation. Format: [{"step":"Short title (max 6 words)","detail":"One sentence description"}]\n\nCategory: ${cat.label}\n${newStart?"Start: "+fmtDate(newStart):""}\n${newDDL?"Deadline: "+fmtDate(newDDL):""}\nTask: "${newText.trim()}"` }]
+          }]
+        }),
+      });
       const data = await res.json();
-      if(res.status === 429){
-        await new Promise(r => setTimeout(r, 3000));
-        // 然后重试一次
-      }
       const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
-      const steps = JSON.parse(raw.replace(/```json|```/g,"").trim()).map((s,i)=>({...s,done:false,id:i}));
       setTasks(prev=>({...prev,[key]:(prev[key]||[]).map(t=>t.id===taskId?{...t,steps,loading:false}:t)}));
     }catch{
       setTasks(prev=>({...prev,[key]:(prev[key]||[]).map(t=>t.id===taskId?{...t,steps:[{id:0,step:"Complete task",detail:newText.trim(),done:false}],loading:false}:t)}));
