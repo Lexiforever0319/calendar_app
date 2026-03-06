@@ -421,19 +421,19 @@ export default function App(){
 
       {/* DAY MODAL */}
       {showModal&&selectedDay&&(
-        <div onClick={()=>setShowModal(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.84)",display:"flex",alignItems:"flex-end",justifyContent:"center",zIndex:200,backdropFilter:"blur(6px)"}}>
-          <div onClick={e=>e.stopPropagation()} style={{background:"#12121E",borderRadius:"18px 18px 0 0",padding:"17px 17px 38px",width:"100%",maxWidth:540,maxHeight:"90vh",overflowY:"auto",border:"1px solid #222234",borderBottom:"none"}}>
-            <div style={{width:32,height:3,background:"#2A2A3A",borderRadius:2,margin:"0 auto 15px"}}/>
+        <div onClick={()=>setShowModal(false)} style={{position:"fixed",inset:0,background:"rgba(171,152,162,0.5)",display:"flex",alignItems:"flex-end",justifyContent:"center",zIndex:200,backdropFilter:"blur(6px)"}}>
+          <div onClick={e=>e.stopPropagation()} style={{background:"#f5edf1",borderRadius:"18px 18px 0 0",padding:"17px 17px 38px",width:"100%",maxWidth:540,maxHeight:"90vh",overflowY:"auto",border:"1px solid #c9b8c0",borderBottom:"none"}}>
+            <div style={{width:32,height:3,background:"#ab98a2",borderRadius:2,margin:"0 auto 15px"}}/>
             <div style={{marginBottom:15}}>
               <div style={{fontSize:18,fontWeight:700}}>{MONTHS[month]} {selectedDay}, {year}</div>
               <div style={{fontSize:11,color:"#444",marginTop:1}}>{dayTasks.length} {dayTasks.length===1?"task":"tasks"}</div>
             </div>
 
             {/* ADD FORM */}
-            <div style={{background:"#1A1A28",borderRadius:13,padding:13,marginBottom:17,border:"1px solid #222234"}}>
+            <div style={{background:"#ecdde5",borderRadius:13,padding:13,marginBottom:17,border:"1px solid #c9b8c0"}}>
               <div style={{display:"flex",gap:5,flexWrap:"wrap",marginBottom:10}}>
                 {CATEGORIES.map(cat=>(
-                  <button key={cat.id} onClick={()=>setNewCat(cat.id)} style={{display:"flex",alignItems:"center",gap:3,padding:"3px 8px",borderRadius:20,cursor:"pointer",border:`1.5px solid ${newCat===cat.id?cat.color:"#2A2A3A"}`,background:newCat===cat.id?cat.light:"transparent",color:newCat===cat.id?cat.dot:"#555",fontSize:11,fontFamily:"inherit",fontWeight:600,transition:"all 0.15s"}}>
+                  <button key={cat.id} onClick={()=>setNewCat(cat.id)} style={{display:"flex",alignItems:"center",gap:3,padding:"3px 8px",borderRadius:20,cursor:"pointer",border:`1.5px solid ${newCat===cat.id?cat.color:"#c9b8c0"}`,background:newCat===cat.id?cat.light:"transparent",color:newCat===cat.id?cat.dot:"#7a6570",fontSize:11,fontFamily:"inherit",fontWeight:600,transition:"all 0.15s"}}>
                     <span>{cat.emoji}</span>{cat.label}
                   </button>
                 ))}
@@ -441,19 +441,19 @@ export default function App(){
               <div style={{display:"flex",gap:6,marginBottom:9}}>
                 <input ref={inputRef} value={newText} onChange={e=>setNewText(e.target.value)} onKeyDown={e=>e.key==="Enter"&&addTask()}
                   placeholder={`Add a ${getCat(newCat).label.toLowerCase()} task…`}
-                  style={{flex:1,background:"#0F0F1A",border:"1px solid #2A2A3A",borderRadius:8,color:"#EDE8E0",padding:"8px 10px",fontSize:13,fontFamily:"inherit",outline:"none"}}/>
+                  style={{flex:1,background:"#f5edf1",border:"1px solid #c9b8c0",borderRadius:8,color:"#3a2a32",padding:"8px 10px",fontSize:13,fontFamily:"inherit",outline:"none"}}/>
                 <button onClick={addTask} disabled={!newText.trim()||aiLoading} style={{background:`linear-gradient(135deg,${getCat(newCat).color},${getCat(newCat).dot})`,border:"none",borderRadius:8,color:"#fff",padding:"8px 13px",cursor:"pointer",fontSize:18,opacity:!newText.trim()||aiLoading?0.4:1,transition:"opacity 0.2s"}}>+</button>
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:7}}>
                 <div>
                   <div style={{fontSize:10,color:"#555",marginBottom:3}}>📅 Start date</div>
                   <input type="date" value={newStart} onChange={e=>setNewStart(e.target.value)}
-                    style={{width:"100%",background:"#0F0F1A",border:"1px solid #2A2A3A",borderRadius:7,color:"#AAA",padding:"6px 8px",fontSize:11,fontFamily:"inherit",outline:"none",colorScheme:"dark"}}/>
+                    style={{width:"100%",background:"#f5edf1",border:"1px solid #c9b8c0",borderRadius:7,color:"#7a6570",padding:"6px 8px",fontSize:11,fontFamily:"inherit",outline:"none",colorScheme:"light"}}/>
                 </div>
                 <div>
                   <div style={{fontSize:10,color:"#555",marginBottom:3}}>🏁 Deadline</div>
                   <input type="date" value={newDDL} onChange={e=>setNewDDL(e.target.value)} min={newStart||todayStr}
-                    style={{width:"100%",background:"#0F0F1A",border:`1px solid ${previewUrg&&previewUrg.stars>0?previewUrg.color+"66":"#2A2A3A"}`,borderRadius:7,color:"#AAA",padding:"6px 8px",fontSize:11,fontFamily:"inherit",outline:"none",colorScheme:"dark"}}/>
+                    style={{width:"100%",background:"#f5edf1",border:`1px solid ${previewUrg&&previewUrg.stars>0?previewUrg.color+"66":"#c9b8c0"}`,borderRadius:7,color:"#7a6570",padding:"6px 8px",fontSize:11,fontFamily:"inherit",outline:"none",colorScheme:"light"}}/>
                 </div>
               </div>
               {previewUrg&&previewUrg.stars>0&&(
@@ -479,8 +479,8 @@ export default function App(){
                 const tot=task.steps.length;
                 const pct=tot===0?0:Math.round((dn/tot)*100);
                 return(
-                  <div key={task.id} style={{background:"#1A1A26",borderRadius:12,marginBottom:10,border:`1px solid ${u&&u.stars>=3?u.color:cat.color}40`,overflow:"hidden"}}>
-                    <div style={{padding:"10px 12px 8px",borderBottom:"1px solid #1C1C2C",display:"flex",alignItems:"flex-start",gap:8}}>
+                  <div key={task.id} style={{background:"#ecdde5",borderRadius:12,marginBottom:10,border:`1px solid ${u&&u.stars>=3?u.color:cat.color}40`,overflow:"hidden"}}>
+                    <div style={{padding:"10px 12px 8px",borderBottom:"1px solid #c9b8c0",display:"flex",alignItems:"flex-start",gap:8}}>
                       <span style={{fontSize:15,marginTop:1}}>{cat.emoji}</span>
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4,flexWrap:"wrap"}}>
@@ -505,7 +505,7 @@ export default function App(){
                           {task.ddl&&<span style={{fontSize:10,color:u&&u.stars>0?u.color:"#555"}}>🏁 {fmtDate(task.ddl)}</span>}
                         </div>
                         <div style={{display:"flex",alignItems:"center",gap:6}}>
-                          <div style={{flex:1,height:3,background:"#222",borderRadius:2,overflow:"hidden"}}>
+                          <div style={{flex:1,height:3,background:"#c9b8c0",borderRadius:2,overflow:"hidden"}}>
                             <div style={{height:"100%",width:`${pct}%`,background:pct===100?"#10B981":u&&u.stars>=3?u.color:cat.color,borderRadius:2,transition:"width 0.4s"}}/>
                           </div>
                           <span style={{fontSize:10,color:"#555"}}>{dn}/{tot}</span>
