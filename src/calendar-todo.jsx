@@ -115,7 +115,7 @@ export default function App(){
     setNewText(""); setAiLoading(true);
     try{
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAqhWYPH-u7-l1y_0CBkHlLTgiYUyYx9_I`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-8b:generateContent?key=AIzaSyAqhWYPH-u7-l1y_0CBkHlLTgiYUyYx9_I`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
