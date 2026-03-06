@@ -114,16 +114,21 @@ export default function App(){
     setTasks(prev=>({...prev,[key]:[...(prev[key]||[]),skeleton]}));
     setNewText(""); setAiLoading(true);
     try{
-      const res=await fetch("https://api.anthropic.com/v1/messages",{
-        method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          model:"claude-sonnet-4-20250514",max_tokens:1000,
-          messages:[{role:"user",content:`Break down this to-do task into 3-6 concrete, actionable steps. Return ONLY a JSON array with no markdown or explanation. Format: [{"step":"Short title (max 6 words)","detail":"One sentence description"}]\n\nCategory: ${cat.label}\n${newStart?"Start: "+fmtDate(newStart):""}\n${newDDL?"Deadline: "+fmtDate(newDDL):""}\nTask: "${newText.trim()}"`}],
-        }),
-      });
-      const data=await res.json();
-      const raw=data.content?.map(b=>b.text||"").join("")||"[]";
-      const steps=JSON.parse(raw.replace(/```json|```/g,"").trim()).map((s,i)=>({...s,done:false,id:i}));
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBQdvcHuqO1mm44qHv5AF3LbcM9tPyo5ZQ`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{ text: `Break down this to-do task into 3-6 concrete, actionable steps. Return ONLY a JSON array with no markdown or explanation. Format: [{"step":"Short title (max 6 words)","detail":"One sentence description"}]\n\nCategory: ${cat.label}\n${newStart?"Start: "+fmtDate(newStart):""}\n${newDDL?"Deadline: "+fmtDate(newDDL):""}\nTask: "${newText.trim()}"` }]
+            }]
+          }),
+        }
+      );
+      const data = await res.json();
+      const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || "[]";
+      const steps = JSON.parse(raw.replace(/```json|```/g,"").trim()).map((s,i)=>({...s,done:false,id:i}));
       setTasks(prev=>({...prev,[key]:(prev[key]||[]).map(t=>t.id===taskId?{...t,steps,loading:false}:t)}));
     }catch{
       setTasks(prev=>({...prev,[key]:(prev[key]||[]).map(t=>t.id===taskId?{...t,steps:[{id:0,step:"Complete task",detail:newText.trim(),done:false}],loading:false}:t)}));
